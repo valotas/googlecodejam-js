@@ -1,0 +1,8 @@
+{
+  "name": "googlecodejam",
+  "version": "0.0.0",
+  "devDependencies": {
+    "karma-chrome-launcher": "~0.1.2",
+    "chai": "~1.9.0"
+  }
+}
