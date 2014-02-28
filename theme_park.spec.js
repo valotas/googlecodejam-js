@@ -25,11 +25,31 @@ describe('theme_park', function () {
     expect(calculateIncome(5, 2, [2,2])).to.equal(10);
   });
 
-  it('should be able to compute the arguments with a 2 line string input', function () {
-    expect(theme_park.getArguments('4 6 4', '1 4 2 1')).to.deep.equal({
-      rounds: 4,
-      maxPersonsPerGroup: 6,
-      groups: [1, 4, 2, 1]
+  describe('arguments processing', function () {
+    it('should be able to compute the arguments with a 2 line string input', function () {
+      expect(theme_park.getArguments('4 6 4', '1 4 2 1')).to.deep.equal({
+        rounds: 4,
+        maxPersonsPerGroup: 6,
+        groups: [1, 4, 2, 1]
+      });
     });
   });
+
+  // stuff for the imporved solution
+  describe('income per round', function () {
+    var computeIncomePerRound = theme_park.computeIncomePerRound;
+
+    it('should return an object describing the costs per rounds for each pass', function () {
+      var ipr = computeIncomePerRound(6, [1, 2, 5, 6, 1]);
+      expect(ipr.first).not.to.be.undefined;
+      expect(ipr.others).to.be.a('array');
+    });
+
+    it('should return 6 as first cost for k 10 and groups 1,5,6,1,3', function () {
+      var ipr = computeIncomePerRound(10, [1, 5, 7, 1, 3]);
+      expect(ipr.first).to.equal(6);
+      expect(ipr.others).to.deep.equal([9, 8]);
+    });
+  });
+
 });

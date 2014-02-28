@@ -37,9 +37,41 @@ var getArguments = function(line1, line2) {
   };
 };
 
+var computeIncomePerRound = function (k, groups) {
+  var passIncome = [];
+  var i = 0, j = 0, passIndex;
+  var maxl = 2 * groups.length;
+  var first = 0;
+
+  var sum = 0;
+  while (i < maxl) {
+    var g = groups[i % groups.length];
+    if (sum + g > k) {
+      passIndex = j;
+      if (i > groups.length) {
+        passIndex %= passIncome.length;
+      }
+      passIncome[passIndex] = sum;
+      if (passIncome.length == 1) {
+        first = sum;
+      }
+      sum = 0;
+      j++;
+    }
+    sum += g;
+    i++;
+  }
+
+  return {
+    first: first,
+    others: passIncome
+  }
+}
+
 if (exports) {
   exports.calculateIncome = calculateIncome;
-  exports.getArguments = getArguments
+  exports.getArguments = getArguments;
+  exports.computeIncomePerRound = computeIncomePerRound;
 }
 
 if (process.argv[1].indexOf('theme_park.js') > 0) {
