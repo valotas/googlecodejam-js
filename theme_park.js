@@ -45,16 +45,20 @@ if (exports) {
 if (process.argv[1].indexOf('theme_park.js') > 0) {
   var line1 = null, i = 0, c = 0;
 
-  require('fs').readFileSync(process.argv[2]).toString().split(/\r?\n/).forEach(function (line) {
-    if (++i == 1) {
-      return;
-    }
-    if (i % 2 === 0) {
-      line1 = line;
-      return;
-    }
-    var args = getArguments(line1, line);
-    var income = calculateIncome(args.rounds, args.maxPersonsPerGroup, args.groups);
-    console.log(++c, income);
+  require('fs')
+    .readFileSync(process.argv[2])
+    .toString()
+    .split(/\r?\n/)
+    .forEach(function (line) {
+      if (++i == 1) {
+        return;
+      }
+      if (i % 2 === 0) {
+        line1 = line;
+        return;
+      }
+      var args = getArguments(line1, line);
+      var income = calculateIncome(args.rounds, args.maxPersonsPerGroup, args.groups);
+      console.log(++c, income);
   });
 }
