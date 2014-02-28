@@ -37,11 +37,56 @@ var getArguments = function(line1, line2) {
   };
 };
 
+var IncomeDescription = (function () {
+  function IncomeDescription(description) {
+    this.first = description ? description.first : 0;
+    this.others = description ? description.others : [];
+  }
+
+  IncomeDescription.prototype = {
+
+    insert: function (index, sum) {
+      this.others[index] = sum;
+      if (this.others.length === 1) {
+        this.first = sum;
+      }
+    },
+
+    _sumOfOthers: function () {
+      var sum = 0;
+      this.others.forEach(function (val) {
+        sum += val;
+      });
+      return sum;
+    },
+
+    _diffOfFirst: function () {
+      return this.first - this.others[0];
+    },
+
+    incomeAfterRounds: function(r) {
+      //some all rounds
+      var mod = r % this.others.length;
+      var sum = (((r - mod) / this.others.length) * this._sumOfOthers());
+
+      //and now the remaining ones
+      for (var i = 0; i < mod; i++) {
+        sum += this.others[i];
+      }
+
+      sum += this._diffOfFirst();
+
+      return sum;
+    }
+  };
+
+  return IncomeDescription;
+})();
+
 var computeIncomePerRound = function (k, groups) {
-  var passIncome = [];
+  var descr = new IncomeDescription();
   var i = 0, j = 0, passIndex;
   var maxl = 2 * groups.length;
-  var first = 0;
 
   var sum = 0;
   while (i < maxl) {
@@ -49,12 +94,9 @@ var computeIncomePerRound = function (k, groups) {
     if (sum + g > k) {
       passIndex = j;
       if (i > groups.length) {
-        passIndex %= passIncome.length;
+        passIndex %= descr.others.length;
       }
-      passIncome[passIndex] = sum;
-      if (passIncome.length == 1) {
-        first = sum;
-      }
+      descr.insert(passIndex, sum);
       sum = 0;
       j++;
     }
@@ -62,16 +104,14 @@ var computeIncomePerRound = function (k, groups) {
     i++;
   }
 
-  return {
-    first: first,
-    others: passIncome
-  }
+  return descr;
 }
 
 if (exports) {
   exports.calculateIncome = calculateIncome;
   exports.getArguments = getArguments;
   exports.computeIncomePerRound = computeIncomePerRound;
+  exports.IncomeDescription;
 }
 
 if (process.argv[1].indexOf('theme_park.js') > 0) {

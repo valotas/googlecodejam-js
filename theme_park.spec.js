@@ -45,10 +45,18 @@ describe('theme_park', function () {
       expect(ipr.others).to.be.a('array');
     });
 
-    it('should return 6 as first cost for k 10 and groups 1,5,6,1,3', function () {
+    it('should return 6 as first cost and [9, 8] as the other\'s for k 10 and groups 1,5,6,1,3', function () {
       var ipr = computeIncomePerRound(10, [1, 5, 7, 1, 3]);
       expect(ipr.first).to.equal(6);
       expect(ipr.others).to.deep.equal([9, 8]);
+    });
+
+    it('should return an object that can compute the actual cost', function () {
+      var ipr = computeIncomePerRound(10, [1, 5, 7, 1, 3]);
+      expect(ipr.incomeAfterRounds(1)).to.equal(6);
+      expect(ipr.incomeAfterRounds(2)).to.equal(14);
+      expect(ipr.incomeAfterRounds(3)).to.equal(23);
+      expect(ipr.incomeAfterRounds(4)).to.equal(31);
     });
   });
 
