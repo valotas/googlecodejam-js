@@ -1,4 +1,4 @@
-var computedGroups = [];
+
 var calculateIncome = function (r, k, groups) {
   var i = 0;
   var end = groups.length;
@@ -85,6 +85,14 @@ var IncomeDescription = (function () {
 
 var computeIncomePerRound = function (k, groups) {
   var descr = new IncomeDescription();
+
+  //edje case of a groupd of one
+  if (groups.length === 1) {
+    descr.first = groups[0];
+    descr.others = groups;
+    return descr;
+  }
+
   var i = 0, j = 0, passIndex;
   var maxl = 2 * groups.length;
 
@@ -106,6 +114,13 @@ var computeIncomePerRound = function (k, groups) {
 
   return descr;
 }
+
+
+
+var calculateIncome2 = function (r, k, groups) {
+  var descr = computeIncomePerRound(k, groups);
+  return descr.incomeAfterRounds(r);
+};
 
 if (exports) {
   exports.calculateIncome = calculateIncome;

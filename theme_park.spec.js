@@ -58,6 +58,15 @@ describe('theme_park', function () {
       expect(ipr.incomeAfterRounds(3)).to.equal(23);
       expect(ipr.incomeAfterRounds(4)).to.equal(31);
     });
+
+    it('should return 1 as first cost and [1] as the other\'s for any k and groups [1]', function () {
+      for (var i = 1; i < 20; i++) {
+        var ipr = computeIncomePerRound(10, [1]);
+        expect(ipr.first).to.equal(1);
+        expect(ipr.others).to.deep.equal([1]);
+        expect(ipr.incomeAfterRounds(i)).to.equal(i);
+      }
+    });
   });
 
 });
