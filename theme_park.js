@@ -38,18 +38,32 @@ var getArguments = function(line1, line2) {
 };
 
 var IncomeDescription = (function () {
-  function IncomeDescription(description) {
-    this.first = description ? description.first : 0;
-    this.others = description ? description.others : [];
+
+  function IncomeDescription() {
+    this.index = 0;
+    this.first = null;
+    this.others = [];
   }
 
   IncomeDescription.prototype = {
 
     insert: function (index, sum) {
+      console.log(index, sum);
       this.others[index] = sum;
-      if (this.others.length === 1) {
+      if (this.first === null) {
+        console.log('first', sum);
         this.first = sum;
       }
+    },
+
+    add: function (sum, pass) {
+      console.log(this.index, sum, pass);
+      var i = pass > 0 ? (this.index % this.others.length) : this.index
+      this.others[i] = sum;
+      if (this.index === 0) {
+        this.first = sum;
+      }
+      this.index++;
     },
 
     _sumOfOthers: function () {
@@ -93,20 +107,16 @@ var computeIncomePerRound = function (k, groups) {
     return descr;
   }
 
-  var i = 0, j = 0, passIndex;
-  var maxl = 2 * groups.length;
+  var i = 0;
+  var maxl = 10 * groups.length;
 
   var sum = 0;
   while (i < maxl) {
-    var g = groups[i % groups.length];
+    var mod = i % groups.length;
+      g = groups[mod];
     if (sum + g > k) {
-      passIndex = j;
-      if (i > groups.length) {
-        passIndex %= descr.others.length;
-      }
-      descr.insert(passIndex, sum);
+      descr.add(sum, (i - mod) / groups.length);
       sum = 0;
-      j++;
     }
     sum += g;
     i++;
@@ -114,8 +124,6 @@ var computeIncomePerRound = function (k, groups) {
 
   return descr;
 }
-
-
 
 var calculateIncome2 = function (r, k, groups) {
   var descr = computeIncomePerRound(k, groups);

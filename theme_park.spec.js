@@ -67,6 +67,12 @@ describe('theme_park', function () {
         expect(ipr.incomeAfterRounds(i)).to.equal(i);
       }
     });
+
+    it('should return (5,[4,6,6]) for k = 6 and groups [1, 4, 2, 1]', function () {
+      var ipr = computeIncomePerRound(6, [1, 4, 2, 1]);
+      expect(ipr.first).to.equal(5);
+      expect(ipr.others).to.deep.equal([4, 6, 6]);
+    });
   });
 
 });
