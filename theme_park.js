@@ -130,6 +130,9 @@ var calculateIncome2 = function (r, k, groups) {
   return descr.incomeAfterRounds(r);
 };
 
+/**
+ * We export the functions that we are interesting to test
+ **/
 if (exports) {
   exports.calculateIncome = calculateIncome;
   exports.getArguments = getArguments;
@@ -137,6 +140,12 @@ if (exports) {
   exports.IncomeDescription;
 }
 
+/**
+ * Run the above if the process looks like
+ * ```
+ * node path/to/theme_park.js arguments
+ * ```
+ **/
 if (process.argv[1].indexOf('theme_park.js') > 0) {
   var line1 = null, i = 0, c = 0;
 
