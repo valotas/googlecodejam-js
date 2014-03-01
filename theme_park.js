@@ -108,14 +108,14 @@ var computeIncomePerRound = function (k, groups) {
   }
 
   var i = 0;
-  var maxl = 10 * groups.length;
-
+  var pass = 0;
   var sum = 0;
-  while (i < maxl) {
+  while (pass < 4) {
     var mod = i % groups.length;
-      g = groups[mod];
+      g = groups[mod],
+      pass = (i - mod) / groups.length;
     if (sum + g > k) {
-      descr.add(sum, (i - mod) / groups.length);
+      descr.add(sum, pass);
       sum = 0;
     }
     sum += g;
